@@ -23,5 +23,8 @@ namespace MyFace.Models.Request
         public string ProfileImageUrl { get; set; }
         
         public string CoverImageUrl { get; set; }
+        [Required]
+        [RegularExpression(PasswordRegEx.Expression) ]
+        public string Password { get; set; }
     }
 }

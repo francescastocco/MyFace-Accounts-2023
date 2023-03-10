@@ -1,4 +1,10 @@
-﻿export interface ListResponse<T> {
+﻿export interface Login {
+    id: number;
+    username: string;
+    isLoggedIn: boolean;
+}
+
+export interface ListResponse<T> {
     items: T[];
     totalNumberOfItems: number;
     page: number;
@@ -38,6 +44,15 @@ export interface NewPost {
     message: string;
     imageUrl: string;
     userId: number;
+}
+
+export async function fetchLogin(encodedUsernamePassword: string): Promise<Login> {
+    const response = await fetch(`https://localhost:5001/login`, {
+        headers: {
+            'Authorization': `Basic ${encodedUsernamePassword}`
+        }
+    });
+    return await response.json();
 }
 
 export async function fetchUsers(searchTerm: string, page: number, pageSize: number): Promise<ListResponse<User>> {

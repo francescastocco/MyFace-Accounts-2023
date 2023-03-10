@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MyFace.Helpers;
 using MyFace.Models.Request;
 using MyFace.Models.Response;
 using MyFace.Repositories;
@@ -27,6 +28,12 @@ namespace MyFace.Controllers
         [HttpGet("{id}")]
         public ActionResult<UserResponse> GetById([FromRoute] int id)
         {
+            var authHeader = HttpContext.Request.Headers["Authorization"];
+            var usernamePassword = AuthHelper.GetUsernamePasswordFromAuthHeader(authHeader);
+            if (!_users.HasAccess(usernamePassword[0], usernamePassword[1]))
+            {
+                return Unauthorized();
+            }
             var user = _users.GetById(id);
             return new UserResponse(user);
         }
